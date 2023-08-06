@@ -1,24 +1,32 @@
 package com.quester.schoolmanagementsystem.payments.controller;
 
 
-import com.quester.schoolmanagementsystem.payments.dto.FeeDetail;
+import com.quester.schoolmanagementsystem.payments.dto.PaymentDto;
 import com.quester.schoolmanagementsystem.payments.service.FeeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Set;
 
 @RestController
 public class FeesController {
-
-
+    private final FeeService feeService;
+    @Autowired
+    public FeesController(FeeService feeService) {
+        this.feeService = feeService;
+    }
     @GetMapping("/")
     public String hello(){
         return "hello from payment service";
     }
+
+    @PostMapping("/pay-fees")
+    public ResponseEntity<String> payFees(@RequestBody Set<PaymentDto> paymentDtoS){
+        return feeService.payFees(paymentDtoS);
+
+    }
+
   /*@GetMapping("/{parentId}")
   @Autowired
     public List<FeeDetail> getStudentsFeeDetails(@PathVariable Long parentId, FeeService service){
